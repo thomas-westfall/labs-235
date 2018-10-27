@@ -1,0 +1,34 @@
+/*
+Thomas Westfall
+9/12/18
+CSCI 235 - Fall 2018
+Project 2 - PlayList.h
+Headers for PlayList.cpp
+*/
+
+#include "Song.cpp"
+#include "Set.cpp"
+class PlayList{
+
+ private:
+     Set<Song> playlist_;
+
+ public:
+  
+PlayList();
+
+PlayList(const Song& a_song);
+int getNumberOfSongs() const;
+
+bool isEmpty() const;
+
+bool addSong(const Song& new_song);
+
+bool removeSong(const Song& a_song);
+
+void clearPlayList();
+
+void displayPlayList() const;
+
+
+};

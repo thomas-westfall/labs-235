@@ -1,0 +1,47 @@
+/*
+Thomas Westfall
+9/12/18
+CSCI 235 - Fall 2018
+Project 3 - PlayList.h
+Headers for PlayList.cpp
+*/
+
+#pragma once
+#include "Song.h"
+#include "LinkedSet.h"
+class PlayList : public LinkedSet<Song>{
+
+ private:
+  Node<Song>* tail_ptr_; // Pointer to last node
+  Node<Song>* getPointerToLastNode() const;
+  Node<Song>* getPointerTo(const Song& target, Node<Song>*& previous_ptr) const;
+
+ public:
+
+     //default constructor
+     PlayList();
+     
+     //parameterized constructor
+     PlayList(const Song& a_song);
+
+     //copy constructor
+     PlayList(const PlayList& a_play_list); // copy constructor
+
+     //destructor
+     ~PlayList();
+	
+     //accessor functions
+     int getNumberOfSongs() const;
+
+
+     //modifier functions
+     bool add(const Song& new_song) override;
+     bool remove(const Song& old_song) override;
+     void loop();
+     void unloop();
+     
+     //output
+     void displayPlayList() const;
+
+
+};

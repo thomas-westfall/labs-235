@@ -1,0 +1,49 @@
+/*
+Thomas Westfall
+9/12/18
+CSCI 235 - Fall 2018
+Project 2 - Song.h
+Headers for Song.cpp
+*/
+
+#pragma once
+#include <string>
+class Song{
+
+private:
+std::string title_;
+std::string author_;
+std::string album_;
+
+public:
+
+ Song(); //default constructor
+
+ Song(const std::string& title, const std::string& author = "", const std::string& album = ""); //parameterized constructor
+
+ //title_ = title
+ void setTitle(std::string title);
+ 
+//"set" in setTitle here means "give a value" and has nothing
+// to do with the Set class. Similarly for setAuthor and setAlbum
+//author_ = author
+ void setAuthor(std::string author);
+
+//album_ = album
+ void setAlbum(std::string album);
+
+//return title_
+ std::string getTitle() const;
+
+//return author_
+ std::string getAuthor() const;
+
+//return album_
+ std::string getAlbum() const;
+
+//equality operator
+ friend bool operator==(const Song& lhs, const Song& rhs);
+
+
+}; //end song
+

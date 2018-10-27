@@ -1,0 +1,82 @@
+/*
+Thomas Westfall
+9/12/18
+CSCI 235 - Fall 2018
+Project 2 - Set.cpp
+Implementation of methods prototyped in Set.h, also implements SetInterface.h
+*/
+
+#include "Set.h"
+
+
+Set<ItemType>::Set(){
+  item_count= 0;
+  max_items_ = DEFAULT_SET_SIZE;
+}
+
+/** Gets the current number of entries in this set.
+    @return The integer number of entries currently in the set. */
+ template <class ItemType>
+ int Set<ItemType>::getCurrentSize() const{
+  return 0;
+}
+
+   /** Checks whether this set is empty.
+    @return True if the set is empty, or false if not. */
+   template <class ItemType>
+ bool Set<ItemType>::isEmpty() const{
+    return false;
+  }
+
+   /** Adds a new entry to this set.
+    @post  If successful, newEntry is stored in the set and
+       the count of items in the set has increased by 1.
+    @param newEntry  The object to be added as a new entry.
+    @return  True if addition was successful, or false if not. */
+     template <class ItemType>
+    bool Set<ItemType>::add(const ItemType& newEntry){
+      return false;
+    }
+   
+   /** Removes a given entry from this set,if possible.
+    @post  If successful, anEntry has been removed from the set
+       and the count of items in the set has decreased by 1.
+    @param anEntry  The entry to be removed.
+    @return  True if removal was successful, or false if not. */
+       template <class ItemType>
+    bool Set<ItemType>::remove(const ItemType& anEntry){
+	return false;
+      }
+
+   /** Removes all entries from this set.
+    @post  set contains no items, and the count of items is 0. */
+	 template <class ItemType>
+ void Set<ItemType>::clear(){
+	}
+
+   /** Tests whether this set contains a given entry.
+    @param anEntry  The entry to locate.
+    @return  True if set contains anEntry, or false otherwise. */
+	   template <class ItemType>
+	   bool Set<ItemType>::contains(const ItemType& anEntry) const{
+	    return false;
+	  }
+
+    
+   /** Fills a vector with all entries that are in this set.
+    @return  A vector containing all the entries in the set. */
+	     template <class ItemType>
+	    std::vector<ItemType> Set<ItemType>::toVector() const{
+	   std::vector<ItemType> ans;
+	   return ans;
+	 }
+
+	    
+  // post: Either returns the index of target in the array items_ 
+  // or -1 if the array does not contain the target
+	   int Set<ItemType>::getIndexOf(const ItemType& target) const{
+	 return 0;
+       }
+
+  
+	   

@@ -1,0 +1,175 @@
+/*
+Thomas Westfall
+10/14/18
+CSCI 235 - Fall 2018
+Project 3 - Playlist.cpp
+Implementation of the PlayList class, with headers from PlayList.h
+*/
+
+#include "PlayList.h"
+#include <iostream>
+using namespace std;
+
+//default constructor
+PlayList::PlayList() : tail_ptr_(nullptr) {}
+
+// parametrized constructor
+PlayList::PlayList(const Song& a_song) {
+	add(a_song);
+}
+
+//copy constructor
+PlayList::PlayList(const PlayList& a_play_list) : tail_ptr_(getPointerToLastNode()) {
+  Node<Song>* current_ptr = nullptr;
+  current_ptr = a_play_list.head_ptr_;
+
+  //adds nodes to new playlist using values from old playlist
+  //iterates through the old playlist until there is nothing left to copy
+  while(current_ptr != nullptr){
+    add(current_ptr->getItem());
+    current_ptr = current_ptr->getNext();
+  }
+}
+
+//destructor
+PlayList::~PlayList() {
+	unloop();
+	clear();
+}
+
+//returns a pointer to last node
+Node<Song>* PlayList::getPointerToLastNode() const {
+  if(isEmpty())
+    return nullptr;
+  Node<Song>* previous_ptr = nullptr;
+  Node<Song>* current_ptr = head_ptr_;
+  
+  if(current_ptr->getNext() == nullptr){ //checks if theres only 1 node
+    previous_ptr = nullptr;
+    return head_ptr_;
+  }
+    //traverse the playlist, stopping when the point reaches null (end)
+    while(current_ptr != nullptr){
+ 
+      //prepare for the next iteration by making previous node current node
+      previous_ptr = current_ptr;
+      //go to the next node
+      current_ptr = current_ptr->getNext();
+    }
+
+    return previous_ptr;
+}
+
+// get the specified pointer and preserve order
+Node<Song>* PlayList::getPointerTo(const Song& target, Node<Song>*& previous_ptr) const {
+  
+  Node<Song>* current_ptr = head_ptr_;
+  previous_ptr = nullptr;
+
+    //traverse the playlist, stopping when the point reaches null (end)
+    while(current_ptr != nullptr){
+      //if current node is the target, return the node before it
+      if(current_ptr->getItem() == target)
+	return current_ptr;
+      
+      //prepare for the next iteration by making previous node current node
+      previous_ptr = current_ptr;
+      //go to the next node
+      current_ptr = current_ptr->getNext();
+    }
+
+    //target not found
+    return nullptr;
+ 
+}
+
+bool PlayList::add(const Song& new_song) {
+  //0 nodes, so added node must be head and tail
+  if (isEmpty()) {
+    Node<Song>* next_node_ptr = new Node<Song>();
+    next_node_ptr->setItem(new_song); //node value is the song now
+    next_node_ptr->setNext(nullptr); //since its the tail, next node is null
+    
+    //set head and tail to new node since its the only one
+    tail_ptr_ = next_node_ptr;
+    head_ptr_ = next_node_ptr;
+    item_count_ = 1; //one song in playlist now
+    
+    return true;
+  }
+  
+  //theres a head already at this point, only check from duplicates here
+  if (!(contains(new_song))) { //runs if song isnt in playlist already
+    Node<Song>* next_node_ptr = new Node<Song>();
+    tail_ptr_->setNext(next_node_ptr); //link tail with new node
+    tail_ptr_ = next_node_ptr; //new node is now the tail (added to the end)
+    next_node_ptr->setItem(new_song); //node's value is the song now   
+    next_node_ptr->setNext(nullptr); //since its the end, set next to null
+    item_count_++; //one more item in the playlist now
+		  
+    return true;
+  }
+  return false;
+}
+
+bool PlayList::remove(const Song& old_song) {
+  Node<Song>* previous_ptr = new Node<Song>(); //obtained from getPointerTo
+  Node<Song>* oldnode = getPointerTo(old_song,previous_ptr); //delete this node
+
+  //check if songs in the playlist, returns false if not
+  if(oldnode == nullptr)
+    return false;
+  
+  else{
+    //first node removal (reset of head)
+    if (oldnode == head_ptr_) {
+      head_ptr_ = head_ptr_->getNext();
+      delete oldnode;
+      item_count_ = item_count_ - 1;
+      return true;
+    }
+    
+    //last node removal (reset of tail)
+    if (oldnode == tail_ptr_){
+      tail_ptr_ = previous_ptr;
+      tail_ptr_->setNext(nullptr);
+      delete oldnode;
+      item_count_ = item_count_ - 1;
+      return true;
+    }
+
+    //node removal thats neither first nor last node
+    else{
+      previous_ptr->setNext(oldnode->getNext()); //link previous with next
+      delete oldnode;
+      item_count_ = item_count_ - 1;
+      return true;
+    }
+  
+  }
+
+  return false;
+}
+
+//loops to head by pointing tail to head
+void PlayList::loop() {
+  tail_ptr_->setNext(head_ptr_);
+}
+
+//unloops by making tail point back to null like normal
+void PlayList::unloop() {
+  tail_ptr_->setNext(nullptr);
+}
+
+// tostring (tovector into cout, void function)
+void PlayList::displayPlayList() const{
+  std::vector<Song> song_vector = toVector();
+  
+  for (int i = 0; i < getCurrentSize(); i++){
+    cout<<"* Title: "<<song_vector[i].getTitle();
+    cout<<" * Author: "<<song_vector[i].getAuthor();
+    cout<<" * Album: "<<song_vector[i].getAlbum()<<" * " <<endl;
+  }
+  cout<<"End of playlist"<<endl;
+}
+
